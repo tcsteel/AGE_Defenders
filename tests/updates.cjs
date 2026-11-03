@@ -9,7 +9,7 @@ function publish(message){git(author,'add','.');git(author,'commit','-m',message
 async function completed(service,job){for(let i=0;i<150;i++){const state=service.readStatus();if(state.job===job&&state.status!=='running'&&!fs.existsSync(service.lock))return state;await sleep(100)}throw Error('Update job timed out')}
 (async()=>{try{
  fs.mkdirSync(local);git(temp,'init','--bare',remote);git(local,'init','-b','main');identity(local);
- write(path.join(local,'.gitignore'),'node_modules/\ndist/\n.tmp/\npublic/assets/\n');
+ write(path.join(local,'.gitignore'),'node_modules\nnode_modules/\ndist/\n.tmp/\npublic/assets/\n');
  write(path.join(local,'package.json'),JSON.stringify({name:'update-test',version:'1.0.0',private:true,type:'module'}));
  write(path.join(local,'package-lock.json'),'{}');
  write(path.join(local,'update-config.json'),JSON.stringify({repository:remote,branch:'main'}));
@@ -17,7 +17,7 @@ async function completed(service,job){for(let i=0;i<150;i++){const state=service
  write(path.join(local,'src/index.ts'),'export const version = 1;');write(path.join(local,'public/index.html'),'version one');
  for(const name of ['update-core.cjs','update-worker.cjs'])write(path.join(local,'scripts',name),fs.readFileSync(path.join(__dirname,'../scripts',name)));
  fs.symlinkSync(path.resolve('node_modules'),path.join(local,'node_modules'),process.platform==='win32'?'junction':'dir');
- write(path.join(local,'public/assets/local-only.txt'),'preserve');git(local,'add','.');git(local,'commit','-m','Initial');git(local,'remote','add','origin',remote);git(local,'push','-u','origin','main');
+ write(path.join(local,'public/assets/local-only.txt'),'preserve');git(local,'add','.');assert.equal(git(local,'ls-files','node_modules'),'','Dependency symlink must stay outside fixture Git history');git(local,'commit','-m','Initial');git(local,'remote','add','origin',remote);git(local,'push','-u','origin','main');
  git(temp,'clone','--branch','main',remote,author);identity(author);
  const service=createService(local);assert.equal((await service.check()).available,false);
  assert.equal(service.localRequest({socket:{remoteAddress:'192.0.2.1'},headers:{host:'localhost:3000'}}),false,'Remote callers rejected');
