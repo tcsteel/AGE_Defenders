@@ -31,8 +31,8 @@ const WALL={left:210,right:790,top:90,bottom:610};
 const areas=[{name:'Farmland',x:330,y:500,color:'#bfad58'},{name:'Lumber camp',x:330,y:230,color:'#86a875'},{name:'Gold mine',x:670,y:230,color:'#d6b65a'},{name:'Stone quarry',x:670,y:500,color:'#abb8b5'}];
 // Familiar research names, with effects adapted to this wave economy.
 const techs=[{name:'Horse Collar',key:0,cost:{food:75,wood:75},desc:'+25% food per villager'},{name:'Double-Bit Axe',key:1,cost:{food:100,wood:50},desc:'+25% wood per villager'},{name:'Gold Mining',key:2,cost:{food:100,wood:75},desc:'+25% gold per villager'},{name:'Stone Mining',key:3,cost:{food:100,wood:75},desc:'+25% stone per villager'},{name:'Heavy Plow',key:0,cost:{food:125,wood:125},requires:0,desc:'+25% food per villager'},{name:'Bow Saw',key:1,cost:{food:150,wood:100},requires:1,desc:'+25% wood per villager'}];
-const types=[{name:'Longbowman',cost:{wood:60,gold:35},range:215,damage:13,hp:85,rate:.85,color:'#d3c083',role:'Long range · strong against raiders'},{name:'Pikeman',cost:{food:60,wood:35},range:92,damage:18,hp:150,rate:.8,color:'#96b1ba',role:'Front line · 3× damage against cavalry'},{name:'Knight',cost:{food:100,gold:80},range:112,damage:27,hp:240,rate:.9,color:'#b7bcdb',role:'Durable defender · strong against raiders'}];
-Object.assign(types[0],{age:2,art:'longbowman'});Object.assign(types[1],{age:2,art:'pikeman',antiCavalry:3});Object.assign(types[2],{age:2,art:'knight'});
+const types=[{name:'Crossbowman',cost:{wood:60,gold:35},range:215,damage:13,hp:85,rate:.85,color:'#d3c083',role:'Long range · strong against raiders'},{name:'Pikeman',cost:{food:60,wood:35},range:92,damage:18,hp:150,rate:.8,color:'#96b1ba',role:'Front line · 3× damage against cavalry'},{name:'Knight',cost:{food:100,gold:80},range:112,damage:27,hp:240,rate:.9,color:'#b7bcdb',role:'Durable defender · strong against raiders'}];
+Object.assign(types[0],{name:'Crossbowman',age:2,art:'crossbowman',cost:{wood:40,gold:25},range:210,damage:15,hp:85,role:'Castle Age archer · stronger attack and range'});Object.assign(types[1],{age:2,art:'pikeman',antiCavalry:3});Object.assign(types[2],{age:2,art:'knight'});
 types.push(
  {name:'Militia',age:0,art:'militiawalk',animated:true,cost:{food:60,gold:20},range:75,damage:12,hp:100,rate:.9,color:'#cbb58d',role:'Dark Age infantry · close defense'},
  {name:'Archer',age:1,art:'archerwalk',animated:true,cost:{wood:40,gold:25},range:170,damage:11,hp:70,rate:.9,color:'#b9c38c',role:'Ranged defense'},
@@ -40,7 +40,7 @@ types.push(
  {name:'Scout Cavalry',age:1,art:'scoutwalk',animated:true,cost:{food:80},range:95,damage:17,hp:160,rate:.85,color:'#b3b0c4',role:'Durable close defense'},
  {name:'Men-at-Arms',age:1,art:'manatarmswalk',animated:true,cost:{food:60,gold:25},range:80,damage:18,hp:135,rate:.85,color:'#cbb58d',role:'Stronger infantry'},
  {name:'Long Swordsman',age:2,art:'longswordwalk',animated:true,cost:{food:70,gold:30},range:85,damage:24,hp:170,rate:.8,color:'#cbb58d',role:'Heavy infantry'},
- {name:'Elite Longbowman',age:3,art:'elitebow',cost:{wood:80,gold:60},range:250,damage:21,hp:110,rate:.8,color:'#d3c083',role:'Long range elite archer'},
+ {name:'Arbalester',age:3,art:'arbalester',cost:{wood:40,gold:25},range:230,damage:21,hp:110,rate:.8,color:'#d3c083',role:'Imperial Age elite archer'},
  {name:'Halberdier',age:3,art:'halberdier',antiCavalry:4,cost:{food:65,wood:45},range:95,damage:22,hp:185,rate:.8,color:'#96b1ba',role:'4× damage against cavalry'},
  {name:'Cavalier',age:3,art:'cavalier',cost:{food:130,gold:100},range:115,damage:36,hp:320,rate:.8,color:'#b7bcdb',role:'Elite cavalry defender'},
  {name:'Skirmisher',age:1,art:'skirmisher',cost:{food:25,wood:35},range:165,damage:7,hp:85,rate:1.05,antiArcher:3,color:'#a5bc8a',role:'Javelin thrower · 3× damage against archers'},
@@ -107,7 +107,7 @@ function recruitCost(i){
  const cost={...types[i].cost};
  if(hasLegacy('szlachta')&&[2,11].includes(i)&&cost.gold)cost.gold=Math.ceil(cost.gold*.4);
  if(hasLegacy('levy')&&[3,7,8].includes(i)){cost.food=(cost.food??0)+(cost.gold??0);delete cost.gold}
- if(hasLegacy('kamandaran')&&i===4){cost.wood=(cost.wood??0)+(cost.gold??0);delete cost.gold}
+ if(hasLegacy('kamandaran')&&[4,0,9].includes(i)){cost.wood=(cost.wood??0)+(cost.gold??0);delete cost.gold}
  if(hasLegacy('kshatriyas')&&cost.food)cost.food=Math.ceil(cost.food*.75);return cost;
 }
 function renderProgression(){
@@ -127,9 +127,10 @@ const troopResearch=[
  {name:'Long Swordsman',from:7,to:8,age:2,requires:0,cost:{food:150,gold:65}},
  {name:'Pikeman',from:5,to:1,age:2,cost:{food:150,gold:80}},
  {name:'Halberdier',from:1,to:10,age:3,requires:2,cost:{food:250,gold:150}},
- {name:'Elite Longbowman',from:0,to:9,age:3,cost:{food:300,gold:200}},
+ {name:'Arbalester',from:0,to:9,age:3,requires:7,cost:{food:450,gold:350}},
  {name:'Cavalier',from:2,to:11,age:3,cost:{food:300,gold:200}},
- {name:'Elite Skirmisher',from:12,to:13,age:2,cost:{wood:200,gold:100}}
+ {name:'Elite Skirmisher',from:12,to:13,age:2,cost:{wood:200,gold:100}},
+ {name:'Crossbowman',from:4,to:0,age:2,cost:{food:175,gold:125}}
 ];
 function trainableType(i){
  const t=types[i];if(!t||t.age>s.age)return false;
@@ -177,8 +178,8 @@ function unitStats(i){
  if((skirm||[5,1,10].includes(i))&&hasLegacy('shields'))stats.pierceArmor+=2;
  if([2,11].includes(i)&&hasLegacy('hauberk')){stats.meleeArmor++;stats.pierceArmor+=2}
  if(i===6&&hasLegacy('silk')){stats.meleeArmor++;stats.pierceArmor++}
- if(i===4&&hasLegacy('bogsveigar'))stats.damage++;
- stats.speed=([2,6,11].includes(i)?65:43)*(i===4&&hasLegacy('herbalism')?1.15:1);
+ if([4,0,9].includes(i)&&hasLegacy('bogsveigar'))stats.damage++;
+ stats.speed=([2,6,11].includes(i)?65:43)*([4,0,9].includes(i)&&hasLegacy('herbalism')?1.15:1);
  return stats;
 }
 function castleStats(){
@@ -392,7 +393,7 @@ const enemyTypes={
  longsword:{label:'Long Swordsmen',speed:40,range:38,damage:25,wallDamage:29,cavalry:false}
 };
 const waveRoster=['militia','militia','scout','archer','manatarms','scout','archer','longsword','scout','longsword','archer','scout'];
-for(const name of new Set(['castle','longbowman','pikeman','knight','mill','lumber','mining','britons','farm','dryground','drygrass','gold','stone','acacia','oak','palisade','wallstone','wallfortified','farmer','lumberjack','goldminer','stoneminer','spearman','elitebow','halberdier','cavalier',...types.flatMap(t=>[t.art,t.art.replace('walk','attack')]),...Object.keys(enemyTypes).flatMap(n=>[n+'walk',n+'attack'])])){
+for(const name of new Set(['castle','crossbowman','pikeman','knight','mill','lumber','mining','britons','farm','dryground','drygrass','gold','stone','acacia','oak','palisade','wallstone','wallfortified','farmer','lumberjack','goldminer','stoneminer','spearman','arbalester','halberdier','cavalier',...types.flatMap(t=>[t.art,t.art.replace('walk','attack')]),...Object.keys(enemyTypes).flatMap(n=>[n+'walk',n+'attack'])])){
  const img=new Image();img.src='/assets/aoe/'+name+'.png';artwork[name]=img;
 }
 function projectedShadow(img,x,y,w,h,source=null){

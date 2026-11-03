@@ -1,0 +1,35 @@
+{
+  "source": "Local AoE2DE Wwise archives",
+  "files": {
+    "ui": {
+      "source": "Base.pck",
+      "id": 125752967,
+      "seconds": 1
+    },
+    "research": {
+      "source": "Base.pck",
+      "id": 266679195,
+      "seconds": 1.5
+    },
+    "victory": {
+      "source": "Base.pck",
+      "id": 149728724,
+      "seconds": 5.5
+    },
+    "music": {
+      "source": "Base.1.pck",
+      "id": 668550287,
+      "seconds": 100
+    },
+    "arrow": {
+      "source": "Base.pck",
+      "id": 193960,
+      "seconds": 0.7
+    },
+    "impact": {
+      "source": "Base.pck",
+      "id": 271504,
+      "seconds": 0.7
+    }
+  }
+}

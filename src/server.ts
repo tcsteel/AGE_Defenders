@@ -1,7 +1,7 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
-const updateService = createRequire(import.meta.url)("../scripts/update-core.cjs").createService();
+const updateService = createRequire(import.meta.url)(process.env.CASTLE_DESKTOP === "1" ? "../scripts/desktop-updates.cjs" : "../scripts/update-core.cjs").createService();
 
 function send(res: ServerResponse, status: number, body: string, contentType = "text/plain; charset=utf-8"): void {
   res.writeHead(status, { "content-type": contentType });
@@ -29,7 +29,7 @@ function router(req: IncomingMessage, res: ServerResponse): void {
   }
 
   // Only serve known imported asset names; never expose arbitrary local files.
-  if (req.method === "GET" && /^\/assets\/aoe\/(castle|longbowman|pikeman|knight|mill|lumber|mining|britons|farm|dryground|drygrass|gold|stone|acacia|oak|palisade|wallstone|wallfortified|farmer|lumberjack|goldminer|stoneminer|spearman|elitebow|halberdier|cavalier|icon-(?:food|wood|gold|stone)|(?:militia|scout|archer|manatarms|longsword|longbowman|pikeman|knight|spearman|elitebow|halberdier|cavalier|skirmisher|eliteskirmisher)(?:walk|attack))\.png$/.test(url.pathname)) {
+  if (req.method === "GET" && /^\/assets\/aoe\/(castle|crossbowman|pikeman|knight|mill|lumber|mining|britons|farm|dryground|drygrass|gold|stone|acacia|oak|palisade|wallstone|wallfortified|farmer|lumberjack|goldminer|stoneminer|spearman|arbalester|halberdier|cavalier|icon-(?:food|wood|gold|stone)|(?:militia|scout|archer|manatarms|longsword|crossbowman|pikeman|knight|spearman|arbalester|halberdier|cavalier|skirmisher|eliteskirmisher)(?:walk|attack))\.png$/.test(url.pathname)) {
     void readFile(new URL(`../public${url.pathname}`, import.meta.url))
       .then(body => { res.writeHead(200, { "content-type": "image/png" }); res.end(body); })
       .catch(() => send(res, 404, "Asset not imported"));
@@ -51,9 +51,10 @@ function router(req: IncomingMessage, res: ServerResponse): void {
   send(res, 404, "Not found\n");
 }
 
-export function startServer(port = Number(process.env.PORT ?? 3000)): void {
+export function startServer(port = Number(process.env.PORT ?? 3000), host = "127.0.0.1") {
   const server = createServer(router);
-  server.listen(port, () => {
-    console.log(`Listening on http://localhost:${port}`);
+  server.listen(port, host, () => {
+    console.log(`Listening on http://${host}:${(server.address() as { port: number }).port}`);
   });
+  return server;
 }

@@ -1,6 +1,6 @@
 {
   "name": "app_aoe2vibe",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,11 +9,19 @@
     "dev": "node scripts/serve.cjs --dev",
     "start": "node scripts/serve.cjs",
     "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "desktop": "npm run build && node scripts/launch-desktop.cjs",
+    "desktop:build": "npm run build && electron-builder --win portable --publish never",
+    "test:desktop": "node tests/desktop-smoke.cjs"
   },
   "devDependencies": {
     "@types/node": "^22.18.0",
+    "electron": "^45.2.1",
+    "electron-builder": "^26.18.0",
     "tsx": "^4.20.0",
     "typescript": "^5.9.0"
-  }
+  },
+  "description": "A medieval wave-defense strategy game",
+  "author": "tcsteel",
+  "main": "desktop/main.cjs"
 }

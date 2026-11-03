@@ -1,0 +1,21 @@
+const {spawn}=require('node:child_process'),fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const version=require('../package.json').version;
+const executable=path.resolve('release/AGE-Defenders-'+version+'-Windows.exe');
+const temp=path.resolve('.tmp/desktop-'+Date.now()),output=path.join(temp,'result.json');
+const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+fs.mkdirSync(temp,{recursive:true});
+const env={...process.env,CASTLE_SMOKE_OUTPUT:output,CASTLE_SMOKE_PROFILE:path.join(temp,'profile')};
+delete env.ELECTRON_RUN_AS_NODE;
+const child=spawn(executable,['--smoke-test'],{windowsHide:true,stdio:'ignore',env});
+let failure;child.on('error',error=>{failure=error});
+(async()=>{try{
+ for(let i=0;i<300&&!fs.existsSync(output)&&!failure;i++)await pause(200);
+ if(failure)throw failure;
+ assert.ok(fs.existsSync(output),'Portable executable must start and report its result');
+ const result=JSON.parse(fs.readFileSync(output,'utf8'));
+ assert.ok(!result.error,result.error);
+ assert.equal(result.desktop,true);assert.equal(result.mode,'run');assert.equal(result.assets,true);
+ assert.ok(['webgpu','canvas'].includes(result.renderer));
+ console.log('PASS packaged portable executable: desktop API, bundled artwork, begin game, '+result.renderer+' renderer.');
+ console.log('Result:',output);
+}catch(error){console.error(error);process.exitCode=1}finally{if(child.exitCode===null)child.kill()}})();

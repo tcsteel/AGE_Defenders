@@ -3,7 +3,6 @@ dist/
 .env
 *.log
 .DS_Store
-public/assets/aoe/
 .tools/
 .tmp/
-public/assets/audio/
+release/

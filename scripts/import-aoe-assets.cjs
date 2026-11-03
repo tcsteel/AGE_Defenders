@@ -34,9 +34,9 @@ function decode(file, layer=28, previous=null){
  return {png:png(w,h,rgba),pixels:rgba,x,y,width:w,height:h};
 }
 const graphics=path.join(root,'resources/_common/drs/graphics');
-const files={castle:'b_west_castle_age3_x1.sld',longbowman:'u_arc_longbowman_idleA_x1.sld',pikeman:'u_inf_pikeman_idleA_x1.sld',knight:'u_cav_knight_idleA_x1.sld',mill:'b_west_mill_age3_x1.sld',lumber:'b_west_lumber_camp_age2_x1.sld',mining:'b_west_mining_camp_age2_x1.sld'};
+const files={castle:'b_west_castle_age3_x1.sld',crossbowman:'u_arc_crossbowman_idleA_x1.sld',pikeman:'u_inf_pikeman_idleA_x1.sld',knight:'u_cav_knight_idleA_x1.sld',mill:'b_west_mill_age3_x1.sld',lumber:'b_west_lumber_camp_age2_x1.sld',mining:'b_west_mining_camp_age2_x1.sld'};
 Object.assign(files,{gold:'n_mine_gold_x1.sld',stone:'n_mine_stone_x1.sld',acacia:'n_tree_acacia_x1.sld',oak:'n_tree_green_oak_x1.sld',palisade:'b_dark_wall_palisade_x1.sld',wallstone:'b_west_wall_stone_x1.sld',wallfortified:'b_west_wall_fortified_x1.sld'});
-Object.assign(files,{spearman:'u_inf_spearman_idleA_x1.sld',elitebow:'u_arc_longbowman_elite_idleA_x1.sld',halberdier:'u_inf_halberdier_idleA_x1.sld',cavalier:'u_cav_cavalier_idleA_x1.sld'});
+Object.assign(files,{spearman:'u_inf_spearman_idleA_x1.sld',arbalester:'u_arc_arbalest_idleA_x1.sld',halberdier:'u_inf_halberdier_idleA_x1.sld',cavalier:'u_cav_cavalier_idleA_x1.sld'});
 const manifest={civilization:'Britons',format:'static main layers and 24-frame full-cycle animation loops; combat has sixteen directions',files:{}};
 for(const[name,file]of Object.entries(files)){const result=decode(path.join(graphics,file));fs.writeFileSync(path.join(output,name+'.png'),result.png);manifest.files[name]={source:file,width:result.width,height:result.height};console.log(name,result.width+'x'+result.height)}
 function animation(file,directional=false){
@@ -58,7 +58,7 @@ function animation(file,directional=false){
  return {png:png(size*frames,size*directions,sheet),width:size*frames,height:size*directions,frames,directions};
 }
 const animations={farmer:'u_vil_male_farmer_taskA_x1.sld',lumberjack:'u_vil_male_lumberjack_taskA_x1.sld',goldminer:'u_vil_male_miner_gold_taskA_x1.sld',stoneminer:'u_vil_male_miner_gold_taskA_x1.sld'};
-for(const[name,prefix]of Object.entries({militia:'u_inf_militia',scout:'u_cav_scout',archer:'u_arc_archer',manatarms:'u_inf_manatarms',longsword:'u_inf_longswordsman',longbowman:'u_arc_longbowman',pikeman:'u_inf_pikeman',knight:'u_cav_knight',spearman:'u_inf_spearman',elitebow:'u_arc_longbowman_elite',halberdier:'u_inf_halberdier',cavalier:'u_cav_cavalier',skirmisher:'u_arc_skirmisher',eliteskirmisher:'u_arc_eliteskirmisher'})){
+for(const[name,prefix]of Object.entries({militia:'u_inf_militia',scout:'u_cav_scout',archer:'u_arc_archer',manatarms:'u_inf_manatarms',longsword:'u_inf_longswordsman',crossbowman:'u_arc_crossbowman',pikeman:'u_inf_pikeman',knight:'u_cav_knight',spearman:'u_inf_spearman',arbalester:'u_arc_arbalest',halberdier:'u_inf_halberdier',cavalier:'u_cav_cavalier',skirmisher:'u_arc_skirmisher',eliteskirmisher:'u_arc_eliteskirmisher'})){
  animations[name+'walk']=prefix+'_walkA_x1.sld';animations[name+'attack']=prefix+'_attackA_x1.sld';
 }
 for(const[name,file]of Object.entries(animations)){const result=animation(file,/(walk|attack)$/.test(name));fs.writeFileSync(path.join(output,name+'.png'),result.png);manifest.files[name]={source:file,width:result.width,height:result.height,frames:result.frames,directions:result.directions};console.log(name,result.frames+' frames × '+result.directions+' directions')}

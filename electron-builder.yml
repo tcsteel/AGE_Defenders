@@ -1,0 +1,29 @@
+appId: com.tcsteel.agedefenders
+productName: AGE Defenders
+directories:
+  output: release
+files:
+  - dist/**
+  - public/**
+  - desktop/**
+  - scripts/update-core.cjs
+  - scripts/desktop-updates.cjs
+  - update-config.json
+  - package.json
+  - ASSET-NOTICE.md
+  - '!public/assets/aoe/longbowman*'
+  - '!public/assets/aoe/elitebow*'
+asar: true
+npmRebuild: false
+electronFuses:
+  runAsNode: false
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+win:
+  target:
+    - target: portable
+      arch: [x64]
+  signAndEditExecutable: false
+  artifactName: AGE-Defenders-${version}-Windows.exe
+portable:
+  requestExecutionLevel: user

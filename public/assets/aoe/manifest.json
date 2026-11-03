@@ -1,0 +1,335 @@
+{
+  "civilization": "Britons",
+  "format": "static main layers and 24-frame full-cycle animation loops; combat has sixteen directions",
+  "files": {
+    "castle": {
+      "source": "b_west_castle_age3_x1.sld",
+      "width": 352,
+      "height": 400
+    },
+    "crossbowman": {
+      "source": "u_arc_crossbowman_idleA_x1.sld",
+      "width": 36,
+      "height": 48
+    },
+    "pikeman": {
+      "source": "u_inf_pikeman_idleA_x1.sld",
+      "width": 20,
+      "height": 56
+    },
+    "knight": {
+      "source": "u_cav_knight_idleA_x1.sld",
+      "width": 68,
+      "height": 64
+    },
+    "mill": {
+      "source": "b_west_mill_age3_x1.sld",
+      "width": 244,
+      "height": 232
+    },
+    "lumber": {
+      "source": "b_west_lumber_camp_age2_x1.sld",
+      "width": 180,
+      "height": 132
+    },
+    "mining": {
+      "source": "b_west_mining_camp_age2_x1.sld",
+      "width": 172,
+      "height": 104
+    },
+    "gold": {
+      "source": "n_mine_gold_x1.sld",
+      "width": 88,
+      "height": 48
+    },
+    "stone": {
+      "source": "n_mine_stone_x1.sld",
+      "width": 88,
+      "height": 40
+    },
+    "acacia": {
+      "source": "n_tree_acacia_x1.sld",
+      "width": 152,
+      "height": 108
+    },
+    "oak": {
+      "source": "n_tree_green_oak_x1.sld",
+      "width": 124,
+      "height": 152
+    },
+    "palisade": {
+      "source": "b_dark_wall_palisade_x1.sld",
+      "width": 92,
+      "height": 88
+    },
+    "wallstone": {
+      "source": "b_west_wall_stone_x1.sld",
+      "width": 80,
+      "height": 104
+    },
+    "wallfortified": {
+      "source": "b_west_wall_fortified_x1.sld",
+      "width": 96,
+      "height": 124
+    },
+    "spearman": {
+      "source": "u_inf_spearman_idleA_x1.sld",
+      "width": 20,
+      "height": 56
+    },
+    "arbalester": {
+      "source": "u_arc_arbalest_idleA_x1.sld",
+      "width": 36,
+      "height": 48
+    },
+    "halberdier": {
+      "source": "u_inf_halberdier_idleA_x1.sld",
+      "width": 28,
+      "height": 44
+    },
+    "cavalier": {
+      "source": "u_cav_cavalier_idleA_x1.sld",
+      "width": 68,
+      "height": 60
+    },
+    "farmer": {
+      "source": "u_vil_male_farmer_taskA_x1.sld",
+      "width": 3072,
+      "height": 128,
+      "frames": 24,
+      "directions": 1
+    },
+    "lumberjack": {
+      "source": "u_vil_male_lumberjack_taskA_x1.sld",
+      "width": 3072,
+      "height": 128,
+      "frames": 24,
+      "directions": 1
+    },
+    "goldminer": {
+      "source": "u_vil_male_miner_gold_taskA_x1.sld",
+      "width": 3072,
+      "height": 128,
+      "frames": 24,
+      "directions": 1
+    },
+    "stoneminer": {
+      "source": "u_vil_male_miner_gold_taskA_x1.sld",
+      "width": 3072,
+      "height": 128,
+      "frames": 24,
+      "directions": 1
+    },
+    "militiawalk": {
+      "source": "u_inf_militia_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "militiaattack": {
+      "source": "u_inf_militia_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "scoutwalk": {
+      "source": "u_cav_scout_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "scoutattack": {
+      "source": "u_cav_scout_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "archerwalk": {
+      "source": "u_arc_archer_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "archerattack": {
+      "source": "u_arc_archer_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "manatarmswalk": {
+      "source": "u_inf_manatarms_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "manatarmsattack": {
+      "source": "u_inf_manatarms_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "longswordwalk": {
+      "source": "u_inf_longswordsman_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "longswordattack": {
+      "source": "u_inf_longswordsman_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "crossbowmanwalk": {
+      "source": "u_arc_crossbowman_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "crossbowmanattack": {
+      "source": "u_arc_crossbowman_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "pikemanwalk": {
+      "source": "u_inf_pikeman_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "pikemanattack": {
+      "source": "u_inf_pikeman_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "knightwalk": {
+      "source": "u_cav_knight_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "knightattack": {
+      "source": "u_cav_knight_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "spearmanwalk": {
+      "source": "u_inf_spearman_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "spearmanattack": {
+      "source": "u_inf_spearman_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "arbalesterwalk": {
+      "source": "u_arc_arbalest_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "arbalesterattack": {
+      "source": "u_arc_arbalest_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "halberdierwalk": {
+      "source": "u_inf_halberdier_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "halberdierattack": {
+      "source": "u_inf_halberdier_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "cavalierwalk": {
+      "source": "u_cav_cavalier_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "cavalierattack": {
+      "source": "u_cav_cavalier_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "skirmisherwalk": {
+      "source": "u_arc_skirmisher_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "skirmisherattack": {
+      "source": "u_arc_skirmisher_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "eliteskirmisherwalk": {
+      "source": "u_arc_eliteskirmisher_walkA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "eliteskirmisherattack": {
+      "source": "u_arc_eliteskirmisher_attackA_x1.sld",
+      "width": 3072,
+      "height": 2048,
+      "frames": 24,
+      "directions": 16
+    },
+    "farm": {
+      "source": "g_fc1.dds",
+      "width": 1024,
+      "height": 1024
+    },
+    "dryground": {
+      "source": "g_des.dds",
+      "width": 1024,
+      "height": 1024
+    },
+    "drygrass": {
+      "source": "g_gr4.dds",
+      "width": 1024,
+      "height": 1024
+    }
+  }
+}

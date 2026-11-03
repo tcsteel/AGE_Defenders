@@ -1,0 +1,46 @@
+name: Windows release
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run desktop:build
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - run: npm run test:desktop
+      - name: Checksum
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem release/*.exe | Select-Object -First 1
+          $hash = (Get-FileHash -LiteralPath $exe.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          Set-Content -LiteralPath ($exe.FullName + '.sha256') -Value ($hash + '  ' + $exe.Name) -Encoding ascii
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AGE-Defenders-Windows
+          path: |
+            release/*.exe
+            release/*.sha256
+      - name: Publish download
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view $env:GITHUB_REF_NAME --repo $env:GITHUB_REPOSITORY
+          if ($LASTEXITCODE -ne 0) {
+            gh release create $env:GITHUB_REF_NAME --repo $env:GITHUB_REPOSITORY --title "AGE Defenders $env:GITHUB_REF_NAME" --notes "Windows x64 portable game. Download the executable and run it; graphics and audio are included. No Node.js or separate AoE2 installation required. This build is unsigned."
+          }
+          gh release upload $env:GITHUB_REF_NAME release/*.exe release/*.sha256 --repo $env:GITHUB_REPOSITORY --clobber
+          exit $LASTEXITCODE
