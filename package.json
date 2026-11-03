@@ -1,0 +1,19 @@
+{
+  "name": "app_aoe2vibe",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/game.cjs && node tests/shell.cjs && node tests/renderer.cjs && node tests/updates.cjs",
+    "test:browser": "node tests/browser-smoke.cjs",
+    "dev": "node scripts/serve.cjs --dev",
+    "start": "node scripts/serve.cjs",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
