@@ -1,6 +1,6 @@
 # Castlehold
 
-Local browser wave-defense strategy game using the repository's TypeScript/Node HTTP server. Inspired by Age of Empires II, with locally imported artwork from the user's installation.
+Local browser wave-defense strategy game using the repository's TypeScript/Node HTTP server. Inspired by Age of Empires II.
 
 ## Run in Cursor
 
