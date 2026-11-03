@@ -29,7 +29,7 @@ function router(req: IncomingMessage, res: ServerResponse): void {
   }
 
   // Only serve known imported asset names; never expose arbitrary local files.
-  if (req.method === "GET" && /^\/assets\/aoe\/(castle|crossbowman|pikeman|knight|mill|lumber|mining|britons|farm|dryground|drygrass|gold|stone|acacia|oak|palisade|wallstone|wallfortified|farmer|lumberjack|goldminer|stoneminer|spearman|arbalester|halberdier|cavalier|icon-(?:food|wood|gold|stone)|(?:militia|scout|archer|manatarms|longsword|crossbowman|pikeman|knight|spearman|arbalester|halberdier|cavalier|skirmisher|eliteskirmisher)(?:walk|attack))\.png$/.test(url.pathname)) {
+  if (req.method === "GET" && /^\/assets\/aoe\/(castle|tower|crossbowman|pikeman|knight|mill|lumber|mining|britons|farm|dryground|drygrass|gold|stone|acacia|oak|palisade|wallstone|wallfortified|farmer|lumberjack|goldminer|stoneminer|spearman|arbalester|halberdier|cavalier|icon-(?:food|wood|gold|stone)|(?:militia|scout|archer|manatarms|longsword|crossbowman|pikeman|knight|spearman|arbalester|halberdier|cavalier|skirmisher|eliteskirmisher)(?:walk|attack))\.png$/.test(url.pathname)) {
     void readFile(new URL(`../public${url.pathname}`, import.meta.url))
       .then(body => { res.writeHead(200, { "content-type": "image/png" }); res.end(body); })
       .catch(() => send(res, 404, "Asset not imported"));

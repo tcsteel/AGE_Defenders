@@ -147,10 +147,20 @@ This updates the local checkout from GitHub; it does not publish a hosted websit
 
 ## Windows download
 
-Download **AGE-Defenders-1.1.0-Windows.exe** from [GitHub Releases](https://github.com/tcsteel/AGE_Defenders/releases/latest) and run it. The portable Windows x64 executable includes the game engine, graphics and audio. It needs neither Node.js nor a separate AoE2 installation. Windows may show an unknown publisher prompt because this build is unsigned.
+Download **AGE-Defenders-1.2.0-Windows.exe** from [GitHub Releases](https://github.com/tcsteel/AGE_Defenders/releases/latest) and run it. The portable Windows x64 executable includes the game engine, graphics and audio. It needs neither Node.js nor a separate AoE2 installation. Windows may show an unknown publisher prompt because this build is unsigned.
 
 Settings and scores are stored in the desktop app profile. The game listens only on this computer at port 3167; it stops its server when closed. A second launch focuses the existing window. If that port is occupied by another application, close that application before launching.
 
 Web updates in the Windows build checks GitHub Releases and links to the latest executable. Download the replacement and close the old game before launching it. The source checkout retains its Git updater.
 
 To build locally: `npm ci`, then `npm run desktop:build`. The executable appears under `release/`. `npm run desktop` starts the desktop app from source. `npm run test:desktop` verifies a built portable executable. The Windows release workflow builds and attaches the executable when a `v*` tag is pushed. Bump package.json/package-lock.json versions before a new release. See [ASSET-NOTICE.md](ASSET-NOTICE.md) for third-party asset information.
+
+## Building management and intermissions (v1.2)
+
+Click the castle on the map (or its sidebar shortcut) to open Army & deployment, Troop upgrades, Blacksmith, and Walls & towers. Advancing ages remains available in the castle. Click a farm/mill, lumber camp, gold mine, or stone quarry to assign its villagers and purchase only that resource's research. Escape closes the building window before pausing the game.
+
+Starting a wave with idle villagers is blocked by an on-screen message. Assign every idle villager at a resource building, then start the wave again. Each victory still grants one new idle villager. During preparation the upcoming attack lane is red with inward-facing arrows.
+
+Enable **Auto deploy to front** in the assault panel to move all mobile defenders, including undeployed troops, to the next attack side after victory. Melee stand ahead of ranged units, occupied tower tiles are skipped, and the new formation becomes each troop's return post. Towers stay where you built them. The option resets for a new run.
+
+Watch Towers are constructed through Castle > Walls & towers from Feudal Age for 50 wood + 125 stone. Select an exterior or wall grid tile to place the purchased tower. Towers have 450 HP, 10 base attack, 6.5-tile range, and a 1.2-second firing interval. Ranged blacksmith research improves their attack/range; Yeomen adds 2 attack. They can intersect wall tiles without changing wall HP, tier, or collision. Enemies can damage/destroy towers, but must still breach the walls to reach the castle. Repair damaged towers between waves; rebuilding requires a clear tile. Tower damage appears as its own group in the damage meter.

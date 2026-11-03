@@ -10,10 +10,9 @@ header{background:linear-gradient(180deg,#514b3e,#292b26);border-bottom:4px ridg
 </style><link rel="stylesheet" href="/ui.css"></head><body>
 <header><div><div class="brand"><img src="/assets/aoe/britons.png" alt="Britons" style="width:32px;height:32px;vertical-align:middle;object-fit:contain"> CASTLEHOLD</div><div class="eyebrow">The last settlement</div></div><div class="hudassault" id="hud-assault" aria-live="polite"></div></header>
 <main><div class="heading"><div><div class="eyebrow" id="phase"></div><h1>Build an economy. Hold the line.</h1><p style="margin:0;font-size:12px">A wave survival strategy · inspired by Age of Empires II</p></div><div class="maptools"><button id="pause-button" class="hud-pause">Pause / Esc</button><button id="expand" aria-pressed="false">Expand map</button><button class="primary" id="start">Start wave 1 →</button></div></div>
-<div class="layout"><section><div class="mapbox"><section class="progression" aria-label="Level and selected unique technologies"><div class="row"><strong id="xp-level">Level 1</strong><small>LEGACIES</small></div><div class="xp-track"><span id="xp-fill"></span></div><div class="xp-count" id="xp-count"></div><div class="chosen-techs" id="chosen-techs"></div></section><div class="battle-hud" aria-label="Settlement resources and population"><div class="resources" id="resources"></div><div class="realmstats" id="hud-village"></div></div><div class="maplabel"><span class="eyebrow">Britons · Arabia</span><div style="margin-top:4px;font-size:12px" id="mapstatus"></div></div><canvas id="map" width="1000" height="740" aria-label="Settlement map. Click a square grid cell outside the walls to place or move the selected unit."></canvas><div class="maphint">◎ Click a deployed unit or garrison troop, then click a grid square to reposition between waves. Placement and pursuit extend to the map edges. The castle fires automatically.</div></div><div class="panel" style="margin-top:14px"><div class="row" style="margin-top:0"><h2 style="margin:0">Settlement chronicle</h2><button id="reset" style="font-size:11px;padding:4px 9px">New game</button></div><div class="log" id="log" aria-live="polite"></div></div><div class="footer"><span>◆ Planning pauses the battlefield</span><span>◆ Survive 12 waves to secure the kingdom</span></div></section>
-<aside><div class="panel" id="agepanel"></div><div class="panel"><div class="row" style="margin-top:0"><h2 style="margin:0">The next assault</h2><span class="badge" id="wave"></span></div><p id="forecast" style="font-size:12px"></p><div class="row"><span>Castle integrity</span><strong id="hp"></strong></div><div class="bar"><span id="hpbar"></span></div><div id="walls"></div></div>
-<div class="panel"><div class="row" style="margin-top:0"><h2 style="margin:0">The working village</h2><span class="badge" id="idle"></span></div><p style="font-size:11px">Harvest is paid on victory. Every working villager adds to the yield. +1 villager per cleared wave.</p><div id="workers"></div></div>
-<div class="panel"><div class="tabs"><button id="trooptab" class="active">Castle · troops</button><button id="techtab">Research</button></div><div id="management"></div></div></aside></div></main>
+<div id="wave-notice" class="wave-notice" role="alert" hidden></div><div id="placement-notice" class="placement-notice" role="status" hidden></div><div class="layout"><section><div class="mapbox"><section class="progression" aria-label="Level and selected unique technologies"><div class="row"><strong id="xp-level">Level 1</strong><small>LEGACIES</small></div><div class="xp-track"><span id="xp-fill"></span></div><div class="xp-count" id="xp-count"></div><div class="chosen-techs" id="chosen-techs"></div></section><div class="battle-hud" aria-label="Settlement resources and population"><div class="resources" id="resources"></div><div class="realmstats" id="hud-village"></div></div><div class="maplabel"><span class="eyebrow">Britons · Arabia</span><div style="margin-top:4px;font-size:12px" id="mapstatus"></div></div><canvas id="map" width="1000" height="740" tabindex="0" aria-label="Settlement map. Click buildings to manage them; click a grid tile to deploy selected troops or towers."></canvas><div class="maphint">Click buildings to manage workers, research and defences. The red route marks the next assault. Select troops or towers at the castle, then place them on the grid.</div></div><div class="panel" style="margin-top:14px"><div class="row" style="margin-top:0"><h2 style="margin:0">Settlement chronicle</h2><button id="reset" style="font-size:11px;padding:4px 9px">New game</button></div><div class="log" id="log" aria-live="polite"></div></div><div class="footer"><span>◆ Planning pauses the battlefield</span><span>◆ Survive 12 waves to secure the kingdom</span></div></section>
+<aside class="settlement-sidebar"><div class="panel"><div class="eyebrow">COMMAND THE SETTLEMENT</div><h2 style="margin-top:8px">Select a building</h2><p class="sub">Click a building on the map or use a shortcut below.</p><div class="building-shortcuts"><button data-building="castle"><img src="/assets/aoe/castle.png" alt=""><span>Castle<small>Army · research · construction</small></span></button><button data-building="0"><img src="/assets/aoe/mill.png" alt=""><span>Farm<small>Workers & food upgrades</small></span></button><button data-building="1"><img src="/assets/aoe/lumber.png" alt=""><span>Lumber camp<small>Workers & wood upgrades</small></span></button><button data-building="2"><img src="/assets/aoe/gold.png" alt=""><span>Gold mine<small>Workers & gold upgrades</small></span></button><button data-building="3"><img src="/assets/aoe/stone.png" alt=""><span>Stone quarry<small>Workers & stone upgrades</small></span></button></div></div><div class="panel"><div class="row" style="margin-top:0"><h2 style="margin:0">The next assault</h2><span class="badge" id="wave"></span></div><p id="forecast" style="font-size:12px"></p><div class="row"><span>Castle integrity</span><strong id="hp"></strong></div><div class="bar"><span id="hpbar"></span></div><div class="row"><span>Wall integrity</span><strong id="wall-summary"></strong></div><div class="row"><span>Villagers awaiting work</span><strong id="idle"></strong></div><label class="auto-deploy"><input type="checkbox" id="auto-deploy"> <span>Auto deploy to front<small>After victory, move troops to the next attack side. Ranged units stay behind melee.</small></span></label></div></aside></div></main>
+<div class="building-overlay" id="building-overlay" hidden><section class="building-dialog" role="dialog" aria-modal="true" aria-labelledby="building-title"><div class="building-heading"><div><div class="eyebrow">SETTLEMENT MANAGEMENT</div><h2 id="building-title"></h2></div><button id="building-close" aria-label="Close building window">Close ×</button></div><p id="building-description"></p><nav class="building-tabs" id="building-tabs" aria-label="Castle management"></nav><div id="agepanel"></div><div id="workers"></div><div id="management"></div><div id="walls"></div></section></div>
 <section class="damage-meter" id="damage-meter" aria-label="Damage meter"><div class="meterhead"><h2>Damage dealt</h2><div class="meterbuttons"><button id="meter-min" title="Minimise damage meter" aria-label="Minimise damage meter" aria-expanded="true">−</button><button id="meter-max" title="Maximise damage meter" aria-label="Maximise damage meter">□</button></div></div><div class="meterbody"><div class="meter-controls"><span>By unit type · all waves</span><label>Text <input id="meter-font" type="range" min="10" max="20" value="12" aria-label="Damage meter text size"></label></div><div id="damage-rows"></div><div class="resizehint">Drag the bottom-right corner to resize.</div></div></section>
 <div class="levelup-overlay" id="levelup-overlay" hidden><section class="levelup-dialog" role="dialog" aria-modal="true" aria-labelledby="levelup-title"><div class="eyebrow">Battle paused · civilisation legacy</div><h2 id="levelup-title">Level up</h2><p>Choose one unique technology. Its bonus lasts for this game and affects existing and future troops. Effects are adapted to this wave-defense mode.</p><div class="reward-options" id="reward-options"></div></section></div>
 
@@ -50,7 +49,7 @@ const ages=[{name:'Dark Age'},{name:'Feudal Age',cost:{food:300}},{name:'Castle 
 // Names checked against local CivTechTrees JSON and English technology strings.
 // Only rewards with supported mechanics are offered; adaptations are explicit.
 const uniqueTechs=[
- {id:'yeomen',name:'Yeomen',civ:'Britons',desc:'+1 tile range to foot archers and Skirmishers. The +2 tower attack bonus applies to castle arrows in this mode.'},
+ {id:'yeomen',name:'Yeomen',civ:'Britons',desc:'+1 tile range to foot archers and Skirmishers. Towers and castle arrows gain +2 attack in this mode.'},
  {id:'atlatl',name:'Atlatl',civ:'Aztecs',desc:'Skirmishers gain +1 attack and +1 tile range.'},
  {id:'garland',name:'Garland Wars',civ:'Aztecs',desc:'Infantry gain +4 attack.'},
  {id:'fereters',name:'Fereters',civ:'Armenians',desc:'Militia-line infantry gain +30 maximum HP. Spearman-line units are excluded.'},
@@ -228,8 +227,8 @@ function setMeterMode(mode){
 }
 function groupedDamage(){
  const groups=new Map();for(const record of Object.values(s.damage)){
-  const key=record.type??'castle';if(!groups.has(key))groups.set(key,{name:key==='castle'?'Castle':types[key].name,damage:0,count:0});
-  const group=groups.get(key);group.damage+=record.damage;if(record.unitId)group.count++;
+  const key=record.kind??record.type??'castle';if(!groups.has(key))groups.set(key,{name:key==='castle'?'Castle':key==='tower'?'Towers':types[key].name,damage:0,count:0});
+  const group=groups.get(key);group.damage+=record.damage;if(record.unitId||record.towerId)group.count++;
  }return [...groups.values()].sort((a,b)=>b.damage-a.damage);
 }
 function renderDamage(){
@@ -269,7 +268,7 @@ function fireCastle(dt){
 function cellAt(x,y){return posts.findIndex(p=>Math.abs(p.x-x)<CELL/2&&Math.abs(p.y-y)<CELL/2)}
 function deploy(index,cell){
  if(s.phase!=='planning'||!s.units[index]||!posts[cell])return false;
- if(s.units.some((u,i)=>u.hp>0&&u.post===cell&&i!==index))return false;
+ if(s.units.some((u,i)=>u.hp>0&&u.post===cell&&i!==index)||towerOccupies(cell))return false;
  const u=s.units[index];u.post=cell;u.homePost=cell;u.x=posts[cell].x;u.y=posts[cell].y;u.moveTo=null;return true;
 }
 function sideCells(side){
@@ -282,7 +281,7 @@ function sideCells(side){
 }
 function redeployAll(side){
  if(s.phase!=='planning'||!['east','south','west','north'].includes(side)||!s.units.length)return false;
- let cells=sideCells(side);
+ let cells=sideCells(side).filter(i=>!towerOccupies(i));
  if(s.units.length>cells.length){log('Not enough '+side+' tiles for the whole army ('+s.units.length+' troops / '+cells.length+' tiles). No units moved.');return false}
  // Keep normal armies compact near the walls; the wider field is for pursuit
  // and larger formations, rather than separating archers by half the map.
@@ -307,7 +306,7 @@ function unitPosition(u){return{x:u.x??walkCells[u.post]?.x??500,y:u.y??walkCell
 const walkIndex=new Map(walkCells.map((p,i)=>[p.col+','+p.row,i]));
 const adjacent=walkCells.map(p=>[[1,0],[-1,0],[0,1],[0,-1]].map(([x,y])=>walkIndex.get((p.col+x)+','+(p.row+y))).filter(i=>i!==undefined));
 function walkableCell(index){
- const p=walkCells[index];
+ const p=walkCells[index];if(towerOccupies(index))return false;
  // The deployment exclusion includes an exterior margin that defenders need
  // to reach wall attackers. Navigation follows the actual intact wall bounds.
  return s.wallhp<=0||p.x<WALL.left||p.x>WALL.right||p.y<WALL.top||p.y>WALL.bottom;
@@ -393,7 +392,7 @@ const enemyTypes={
  longsword:{label:'Long Swordsmen',speed:40,range:38,damage:25,wallDamage:29,cavalry:false}
 };
 const waveRoster=['militia','militia','scout','archer','manatarms','scout','archer','longsword','scout','longsword','archer','scout'];
-for(const name of new Set(['castle','crossbowman','pikeman','knight','mill','lumber','mining','britons','farm','dryground','drygrass','gold','stone','acacia','oak','palisade','wallstone','wallfortified','farmer','lumberjack','goldminer','stoneminer','spearman','arbalester','halberdier','cavalier',...types.flatMap(t=>[t.art,t.art.replace('walk','attack')]),...Object.keys(enemyTypes).flatMap(n=>[n+'walk',n+'attack'])])){
+for(const name of new Set(['castle','tower','crossbowman','pikeman','knight','mill','lumber','mining','britons','farm','dryground','drygrass','gold','stone','acacia','oak','palisade','wallstone','wallfortified','farmer','lumberjack','goldminer','stoneminer','spearman','arbalester','halberdier','cavalier',...types.flatMap(t=>[t.art,t.art.replace('walk','attack')]),...Object.keys(enemyTypes).flatMap(n=>[n+'walk',n+'attack'])])){
  const img=new Image();img.src='/assets/aoe/'+name+'.png';artwork[name]=img;
 }
 function projectedShadow(img,x,y,w,h,source=null){
@@ -409,8 +408,93 @@ function animatedSprite(name,x,y,scale=.8,active=true,offset=0,direction=0){
  projectedShadow(img,x,y,128*scale,128*scale,[frame*128,(direction%rows)*128,128,128]);
  ctx.drawImage(img,frame*128,(direction%rows)*128,128,128,x-64*scale,y-112*scale,128*scale,128*scale);return true;
 }
+const TOWER={cost:{wood:50,stone:125},age:1,hp:450,range:260,damage:10,interval:1.2};
+const attackSides=['east','south','west','north'];
+function attackSide(){return attackSides[assault().side]}
+function assignWorker(i,delta){
+ if(s.phase!=='planning'||!Number.isInteger(i)||i<0||i>3||![1,-1].includes(delta)||delta>0&&!idle()||delta<0&&!s.workers[i])return false;
+ s.workers[i]+=delta;return true;
+}
+function researchEconomy(i){
+ const t=techs[i];if(!t||s.phase!=='planning'||s.tech.includes(i)||!afford(t.cost)||t.requires!==undefined&&!s.tech.includes(t.requires))return false;
+ pay(t.cost);s.tech.push(i);log(t.name+' researched. Future harvests increased.');return true;
+}
+function workerControls(i){return `<section class="worker-assignment"><div><div class="eyebrow">${keys[i]} economy</div><h3>${s.workers[i]} working villagers</h3><p>${yieldFor(i)} ${keys[i]} each · <strong>${s.workers[i]*yieldFor(i)} per victory</strong></p><small>${idle()} idle villagers available</small></div><div class="counter"><button data-worker="${i}" data-delta="-1" aria-label="Remove ${keys[i]} worker" ${s.phase!=='planning'||!s.workers[i]?'disabled':''}>−</button><strong>${s.workers[i]}</strong><button data-worker="${i}" data-delta="1" aria-label="Assign ${keys[i]} worker" ${s.phase!=='planning'||!idle()?'disabled':''}>+</button></div></section>`}
+function openBuilding(building){
+ if(s.phase!=='planning'||building!=='castle'&&(!Number.isInteger(building)||building<0||building>3))return false;
+ buildingFocus=document.activeElement;activeBuilding=building;selected=null;placingTower=null;render();$('building-close').focus?.();return true;
+}
+function closeBuilding(){activeBuilding=null;render();(buildingFocus?.isConnected?buildingFocus:$('map')).focus?.()}
+function buildingAt(x,y){
+ if(x>=436&&x<=564&&y>=267&&y<=430)return 'castle';
+ const bounds=[[218,432,390,565],[270,415,180,290],[595,751,160,290],[595,751,440,550]];
+ const hit=bounds.findIndex(([left,right,top,bottom])=>x>=left&&x<=right&&y>=top&&y<=bottom);
+ return hit>=0?hit:null;
+}
+function renderBuildingPanel(){
+ const castle=activeBuilding==='castle',resource=Number.isInteger(activeBuilding),planning=s.phase==='planning';
+ $('building-overlay').hidden=activeBuilding===null;
+ $('building-title').textContent=castle?'Castle':resource?areas[activeBuilding].name:'';
+ $('building-description').textContent=castle?'Train your army, research improvements, and build defences. Changes are available between waves.':'Assign villagers and improve this resource economy. Income is collected after a successful wave.';
+ $('building-tabs').hidden=!castle;$('agepanel').hidden=!castle;$('workers').hidden=!resource;$('walls').hidden=!castle||tab!=='defences';
+ $('building-tabs').innerHTML=castle?[['troops','Army & deployment'],['troop-tech','Troop upgrades'],['blacksmith','Blacksmith'],['defences','Walls & towers']].map(([id,name])=>`<button data-view="${id}" class="${tab===id?'active':''}" aria-pressed="${tab===id}">${name}</button>`).join(''):'';
+ let body='';
+ if(resource)body='<h3>Resource upgrades</h3>'+techs.map((t,i)=>t.key!==activeBuilding?'':`<button class="upgrade" data-tech="${i}" ${!planning||s.tech.includes(i)||!afford(t.cost)||t.requires!==undefined&&!s.tech.includes(t.requires)?'disabled':''}>${s.tech.includes(i)?'✓ ':''}${t.name}<small>${t.desc}<br>${price(t.cost)}${t.requires!==undefined?' · requires '+techs[t.requires].name:''}</small></button>`).join('');
+ if(castle&&tab==='troops')body=`<div class="army-grid">${types.map((t,i)=>!trainableType(i)?'':`<button class="upgrade" data-train="${i}" ${!canTrain(i)?'disabled':''}>+ Train ${t.name}<small>${price(recruitCost(i))}<br>${t.role}<br>${statsText(i)}</small></button>`).join('')}</div>${selected!==null?'<button class="primary wide" id="place-selected" style="margin-top:12px">Place selected defender on map</button>':''}${redeployButtons()}<h3>Garrison · ${s.units.length} defenders</h3><p class="sub">Select a defender to place or reposition it on the map. After victory, troops recover and return to their assigned posts.</p><div class="garrison-list">${s.units.map((u,i)=>`<button class="upgrade" data-select="${i}" ${!planning?'disabled':''}>${types[u.type].name} #${u.id} · ${Math.ceil(u.hp)} HP<small>${u.post===null?'Awaiting deployment':'Deployed · click to reposition'}</small></button>`).join('')||'<p>No troops trained yet.</p>'}</div>`;
+ if(castle&&tab==='troop-tech')body=troopResearchButtons();
+ if(castle&&tab==='blacksmith')body=blacksmithButtons();
+ if(castle&&tab==='defences')body=`<h3>Construct a tower</h3><p class="sub">Stationary arrow defence · ${TOWER.hp} HP · ${towerStats().damage} attack · ${(towerStats().range/CELL).toFixed(1)} tile range. May overlap the wall without changing its health or blocking function.</p><button class="upgrade" id="build-tower" ${!planning||s.age<TOWER.age||!afford(TOWER.cost)?'disabled':''}>+ Build Watch Tower<small>${price(TOWER.cost)} · Feudal Age required · select a grid tile after purchase</small></button>${s.towers.map((t,i)=>`<div class="tower-entry"><strong>Tower #${t.id} · ${Math.ceil(t.hp)} / ${TOWER.hp} HP</strong><div class="row"><button data-place-tower="${i}" ${!planning||t.hp<=0?'disabled':''}>${t.cell===null?'Place on map':'Reposition'}</button><button data-repair-tower="${i}" ${!canRepairTower(i)?'disabled':''}>Repair · ${price(towerRepairCost(t))}</button></div></div>`).join('')}<h3 style="margin-top:24px">Settlement fortifications</h3>`;
+ $('management').innerHTML=body;
+}
+function startWave(){
+ if(s.phase!=='planning')return false;
+ if(idle()>0){notice='Assign '+idle()+' idle villager'+(idle()===1?'':'s')+' before starting the next wave. Click a resource building and press + to give them work.';log(notice);render();$('wave-notice').scrollIntoView?.({block:'nearest',behavior:'smooth'});return false}
+ notice='';s.maxWave=Math.max(s.maxWave,s.wave);s.phase='battle';remaining=assault().count;spawn=0;selected=null;placingTower=null;activeBuilding=null;log('Wave '+s.wave+' has begun. Undeployed troops remain in the castle.');return true;
+}
+function towerStats(){
+ const stats={...TOWER};for(const i of s.blacksmithTech){const r=blacksmithResearch[i];if(r.group==='ranged'){stats.damage+=r.attack??0;stats.range+=r.range??0}}
+ if(hasLegacy('yeomen'))stats.damage+=2;return stats;
+}
+function towerOccupies(cell){return s.towers.some(t=>t.cell!==null&&t.cell===cell&&t.hp>0)}
+function towerPlacementCell(cell){const p=walkCells[cell];return !!p&&(cell<posts.length||p.col===0||p.col===GRID.cols-1||p.row===0||p.row===GRID.rows-1)}
+function towerCellAt(x,y){return walkCells.findIndex(p=>Math.abs(p.x-x)<CELL/2&&Math.abs(p.y-y)<CELL/2)}
+function buildTower(){
+ if(s.phase!=='planning'||s.age<TOWER.age||!afford(TOWER.cost))return false;
+ pay(TOWER.cost);const id=s.nextTowerId++;s.towers.push({id,hp:TOWER.hp,cell:null,cool:0});s.damage['tower-'+id]={name:'Tower #'+id,kind:'tower',towerId:id,damage:0};placingTower=s.towers.length-1;selected=null;closeBuilding();log('Tower constructed. Choose an empty exterior or wall grid tile.');return true;
+}
+function placeTower(index,cell){
+ const tower=s.towers[index];if(s.phase!=='planning'||!tower||tower.hp<=0||!towerPlacementCell(cell)||s.towers.some((t,i)=>i!==index&&t.cell===cell&&t.hp>0)||s.units.some(u=>u.post===cell&&u.hp>0))return false;
+ tower.cell=cell;tower.cool=0;placingTower=null;log('Tower placed. Walls retain their health and protection.');return true;
+}
+function towerRepairCost(tower){const fraction=Math.max(0,TOWER.hp-tower.hp)/TOWER.hp;return{wood:Math.ceil(25*fraction),stone:Math.ceil(60*fraction)}}
+function canRepairTower(index){const t=s.towers[index];return !!t&&s.phase==='planning'&&t.hp<TOWER.hp&&afford(towerRepairCost(t))&&(t.hp>0||t.cell===null||!s.units.some(u=>u.hp>0&&u.post===t.cell)&&!s.towers.some((other,i)=>i!==index&&other.hp>0&&other.cell===t.cell))}
+function repairTower(index){const t=s.towers[index];if(!canRepairTower(index))return false;pay(towerRepairCost(t));t.hp=TOWER.hp;return true}
+function fireTowers(dt){
+ const stats=towerStats();for(const t of s.towers){
+  if(s.phase!=='battle')return;if(t.hp<=0||t.cell===null)continue;t.cool=Math.max(0,t.cool-dt);if(t.cool>0)continue;
+  const p=walkCells[t.cell],target=enemies.filter(e=>e.hp>0&&Math.hypot(e.x-p.x,e.y-p.y)<=stats.range).sort((a,b)=>a.hp-b.hp)[0];if(!target)continue;
+  dealDamage(target,stats.damage,'tower-'+t.id);t.cool=stats.interval;globalThis.CastleShell?.sfx('arrow');shots.push({x:p.x,y:p.y-62,tx:target.x,ty:target.y,life:.25,castle:true});
+ }
+}
+function drawTowers(){
+ for(const t of [...s.towers].filter(t=>t.cell!==null).sort((a,b)=>walkCells[a.cell].y-walkCells[b.cell].y)){
+  const p=walkCells[t.cell];if(t.hp<=0){rect(p.x-14,p.y-7,28,14,'#807663');continue}
+  if(!sprite('tower',p.x,p.y+18,65,100)){rect(p.x-15,p.y-62,30,80,'#b6ac91','#645b47');rect(p.x-20,p.y-70,40,16,'#b6ac91','#645b47')}
+  rect(p.x-18,p.y+22,36,4,'#283125');rect(p.x-18,p.y+22,36*t.hp/TOWER.hp,4,'#cdb774');
+ }
+ if(placingTower!==null)for(let i=0;i<walkCells.length;i++){if(!towerPlacementCell(i))continue;const p=walkCells[i],occupied=towerOccupies(i)||s.units.some(u=>u.hp>0&&u.post===i);ctx.strokeStyle=occupied?'#cb6559':'#f8d587';ctx.lineWidth=1.5;ctx.strokeRect(p.x-19,p.y-19,38,38)}
+}
+function assaultRoute(){const side=assault().side,horizontal=side%2===0,positive=side<2;return {side,from:{x:horizontal?(positive?WALL.right+18:WALL.left-18):500,y:horizontal?350:(positive?WALL.bottom+18:WALL.top-18)},to:{x:horizontal?(positive?viewMax.x:viewMin.x):500,y:horizontal?350:(positive?viewMax.y:viewMin.y)}}}
+function drawAssaultRoute(){
+ if(s.phase!=='planning')return;const route=assaultRoute(),{from,to}=route;
+ ctx.save();ctx.strokeStyle='#6f252c88';ctx.lineWidth=34;ctx.beginPath();ctx.moveTo(from.x,from.y);ctx.lineTo(to.x,to.y);ctx.stroke();ctx.strokeStyle='#ce5541b8';ctx.lineWidth=22;ctx.stroke();
+ // Inward chevrons communicate travel direction without relying on colour alone.
+ const dx=from.x-to.x,dy=from.y-to.y,length=Math.hypot(dx,dy),ux=dx/length,uy=dy/length;
+ ctx.strokeStyle='#ffddbc';ctx.lineWidth=3;for(let distance=60;distance<length;distance+=85){const x=to.x+ux*distance,y=to.y+uy*distance;ctx.beginPath();ctx.moveTo(x-ux*12-uy*9,y-uy*12+ux*9);ctx.lineTo(x,y);ctx.lineTo(x-ux*12+uy*9,y-uy*12-ux*9);ctx.stroke()}ctx.restore();
+}
+let activeBuilding=null,placingTower=null,notice='',buildingFocus=null;
 let s,tab='troops',selected=null,enemies=[],shots=[],spawn=0,remaining=0,last=0,swings=[],particles=[],uiElapsed=0,animationTime=0,rewardFocusLevel=0;
-function fresh(){s={age:0,kills:0,maxWave:0,clearedWave:0,level:1,xp:0,totalXP:0,legacy:[],rewardOptions:[],resumePhase:null,nextUnitId:1,troopTech:[],blacksmithTech:[],damage:{castle:{name:"Castle",damage:0}},castleCooldown:0,res:[440,260,180,180],workers:[2,2,1,1],villagers:7,tech:[],units:[],wall:0,wallhp:500,hp:1000,wave:1,phase:'planning',logs:['Dark Age: train Militia and assign your idle villager. Your castle automatically fires on nearby enemies.']};selected=null;enemies=[];shots=[];swings=[];particles=[];rewardFocusLevel=0;render()}
+function fresh(){s={age:0,kills:0,maxWave:0,clearedWave:0,level:1,xp:0,totalXP:0,legacy:[],rewardOptions:[],resumePhase:null,nextUnitId:1,nextTowerId:1,towers:[],autoDeploy:false,troopTech:[],blacksmithTech:[],damage:{castle:{name:"Castle",damage:0}},castleCooldown:0,res:[440,260,180,180],workers:[2,2,1,1],villagers:7,tech:[],units:[],wall:0,wallhp:500,hp:1000,wave:1,phase:'planning',logs:['Dark Age: train Militia and assign your idle villager. Your castle automatically fires on nearby enemies.']};activeBuilding=null;tab='troops';placingTower=null;notice='';selected=null;remaining=0;spawn=0;uiElapsed=0;enemies=[];shots=[];swings=[];particles=[];rewardFocusLevel=0;render()}
 function log(t){s.logs.unshift(t);s.logs=s.logs.slice(0,20)}
 function price(c){return Object.entries(c).map(([k,v])=>v+' '+k).join(' · ')}
 function afford(c){return Object.entries(c).every(([k,v])=>s.res[keys.indexOf(k)]>=v)}
@@ -433,28 +517,39 @@ $('phase').textContent=s.phase==='won'?'Kingdom secured':s.phase==='lost'?'The c
  $('start').disabled=!planning;$('start').textContent=s.phase==='battle'?'Wave underway…':`Start wave ${s.wave} →`;$('wave').textContent=`WAVE ${s.wave} / 12`;
  $('forecast').textContent=`${a.count} ${a.label} approaching from the ${['east','south','west','north'][a.side]}. ${a.cavalry?'Spearmen and Pikemen counter cavalry.':a.model==='archer'?'Enemy archers can shoot defenders from range.':'Ranged troops can thin their ranks after advancing ages.'}`;
  $('hp').textContent=`${Math.ceil(s.hp)} / 1,000`;$('hpbar').style.width=s.hp/10+'%';$('mapstatus').textContent=`Britons · ${s.units.length} defenders · ${s.villagers} villagers`;$('idle').textContent=idle()+' IDLE';
- $('workers').innerHTML=keys.map((k,i)=>`<div class="row"><div>${icons[i]} ${areas[i].name}<div class="sub">${s.workers[i]*yieldFor(i)} ${k} / victory · ${yieldFor(i)} each</div></div><div class="counter"><button data-worker="${i}" data-delta="-1" aria-label="Remove ${k} worker" ${!planning||!s.workers[i]?'disabled':''}>−</button><strong>${s.workers[i]}</strong><button data-worker="${i}" data-delta="1" aria-label="Assign ${k} worker" ${!planning||!idle()?'disabled':''}>+</button></div></div>`).join('');
+ $('workers').innerHTML=Number.isInteger(activeBuilding)?workerControls(activeBuilding):'';
  const wallcost={wood:80,stone:100+s.wall*80};$('walls').innerHTML=`<div class="row"><span>Wall integrity</span><strong>${Math.ceil(s.wallhp)} / ${wallMaximum()} HP</strong></div><div class="bar"><span style="width:${s.wallhp/(wallMaximum())*100}%;background:#d5b577"></span></div>${s.wallhp===0?'<div class="badge">BREACHED · CASTLE EXPOSED</div>':''}<div class="sub">${['Palisade','Stone Wall','Fortified Wall'][s.wall]} · ${Math.ceil(s.wallhp)} / ${wallMaximum()} HP</div><button class="upgrade" id="wallupgrade" ${!planning||s.wall===2||!afford(wallcost)?'disabled':''}>${s.wall===2?'Fortifications complete':'Upgrade to '+['Stone Wall','Fortified Wall'][s.wall]}<small>${s.wall===2?'Maximum tier':price(wallcost)+' · +450 HP, restores walls'}</small></button>${repairButton('castle')}${repairButton('walls')}`;
- $('management').innerHTML=tab==='troops'?`<p style="font-size:11px">Train at the castle, then deploy outside the walls. Troops pursue on the grid and enter the base after a wall breach. All defenders recover and return to their assigned posts after victory.</p>${types.map((t,i)=>!trainableType(i)?'':`<button class="upgrade" data-train="${i}" ${!canTrain(i)?'disabled':''}>+ Train ${t.name}<small>${price(recruitCost(i))}<br>${t.role}<br>${statsText(i)}</small></button>`).join('')}${redeployButtons()}<div class="sub" style="margin-top:13px">GARRISON · select to deploy / reposition</div>${s.units.map((u,i)=>`<button class="upgrade" data-select="${i}" ${!planning?'disabled':''} style="${selected===i?'border-color:#d5b577':''}">${selected===i?'◎ ':''}${types[u.type].name} #${u.id??i+1} · ${Math.ceil(u.hp)} HP<small>${statsText(u.type)}<br>${u.post===null?'Awaiting deployment — click a grid cell':'Deployed · select to reposition'}</small></button>`).join('')}`:`<p style="font-size:11px">AoE II inspired research. Effects are adapted to per-wave income; each tier adds 25% of the base yield.</p>${techs.map((t,i)=>`<button class="upgrade" data-tech="${i}" ${!planning||s.tech.includes(i)||!afford(t.cost)||(t.requires!==undefined&&!s.tech.includes(t.requires))?'disabled':''}>${s.tech.includes(i)?'✓ ':''}${t.name}<small>${t.desc}<br>${price(t.cost)}${t.requires!==undefined?' · requires '+techs[t.requires].name:''}</small></button>`).join('')}${troopResearchButtons()}${blacksmithButtons()}`;
+ renderBuildingPanel();
  $('log').textContent='';s.logs.forEach(t=>{const d=document.createElement('div');d.textContent=t;$('log').append(d)});
  renderDamage();
- $('trooptab').classList.toggle('active',tab==='troops');$('techtab').classList.toggle('active',tab==='tech');
+ $('wall-summary').textContent=Math.ceil(s.wallhp)+' / '+wallMaximum();
+ $('auto-deploy').checked=s.autoDeploy;$('auto-deploy').disabled=!planning;
+ if(!idle())notice='';$('wave-notice').hidden=!notice;$('wave-notice').textContent=notice;
+ const placing=placingTower!==null?'Place tower: choose an empty exterior or wall grid tile.':selected!==null?'Place defender: choose an empty exterior grid tile.':'';
+ $('placement-notice').hidden=!placing;$('placement-notice').innerHTML=placing?placing+' <button id="cancel-placement">Cancel</button>':'';
 }
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(globalThis.CastleShell&&!CastleShell.canSimulate())return;globalThis.CastleShell?.sfx('ui');if(b.dataset.legacy){chooseLegacy(b.dataset.legacy);return}if(b.id==='trooptab'||b.id==='techtab'){tab=b.id==='trooptab'?'troops':'tech';render();return}if(b.id==='expand'){const expanded=document.body.classList.toggle('map-expanded');b.setAttribute('aria-pressed',String(expanded));b.textContent=expanded?'Restore view':'Expand map';return}if(b.id==='meter-min'){setMeterMode(meterMode==='minimized'?'normal':'minimized');return}if(b.id==='meter-max'){setMeterMode(meterMode==='maximized'?'normal':'maximized');return}if(b.id==='reset'){if(confirm('Start a new settlement? Current progress will be lost.'))fresh();return}if(s.phase!=='planning')return;
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(globalThis.CastleShell&&!CastleShell.canSimulate())return;globalThis.CastleShell?.sfx('ui');if(b.dataset.legacy){chooseLegacy(b.dataset.legacy);return}if(b.dataset.building!==undefined){openBuilding(b.dataset.building==='castle'?'castle':Number(b.dataset.building));return}if(b.id==='building-close'){closeBuilding();return}if(b.dataset.view){tab=b.dataset.view;render();return}if(b.id==='cancel-placement'){selected=null;placingTower=null;render();return}if(b.id==='expand'){const expanded=document.body.classList.toggle('map-expanded');b.setAttribute('aria-pressed',String(expanded));b.textContent=expanded?'Restore view':'Expand map';return}if(b.id==='meter-min'){setMeterMode(meterMode==='minimized'?'normal':'minimized');return}if(b.id==='meter-max'){setMeterMode(meterMode==='maximized'?'normal':'maximized');return}if(b.id==='reset'){if(confirm('Start a new settlement? Current progress will be lost.'))fresh();return}if(s.phase!=='planning')return;
  if(b.dataset.blacksmith!==undefined)researchBlacksmith(+b.dataset.blacksmith);
  if(b.dataset.troopTech!==undefined)researchTroop(+b.dataset.troopTech);
  if(b.dataset.redeploy)redeployAll(b.dataset.redeploy);
  if(b.dataset.repair)repair(b.dataset.repair);
- if(b.dataset.worker!==undefined)s.workers[+b.dataset.worker]+=+b.dataset.delta;
+ if(b.dataset.worker!==undefined)assignWorker(+b.dataset.worker,+b.dataset.delta);
  if(b.dataset.train!==undefined)train(+b.dataset.train);
  if(b.id==='advanceage')advanceAge();
- if(b.dataset.select!==undefined)selected=+b.dataset.select;
- if(b.dataset.tech!==undefined){const i=+b.dataset.tech;pay(techs[i].cost);s.tech.push(i);log(techs[i].name+' researched. Future harvests increased.')}
+ if(b.dataset.select!==undefined){selected=+b.dataset.select;placingTower=null;closeBuilding()}
+ if(b.id==='place-selected')closeBuilding();
+ if(b.id==='build-tower')buildTower();
+ if(b.dataset.placeTower!==undefined){placingTower=+b.dataset.placeTower;selected=null;closeBuilding()}
+ if(b.dataset.repairTower!==undefined)repairTower(+b.dataset.repairTower);
+ if(b.dataset.tech!==undefined)researchEconomy(+b.dataset.tech);
  if(b.id==='wallupgrade'){pay({wood:80,stone:100+s.wall*80});s.wall++;s.wallhp=wallMaximum();log('Walls upgraded and restored.')}
- if(b.id==='start'){s.maxWave=Math.max(s.maxWave,s.wave);s.phase='battle';remaining=assault().count;spawn=0;selected=null;log('Wave '+s.wave+' has begun. Undeployed troops remain in the castle.')}
+ if(b.id==='start')startWave();
  render();});
 document.addEventListener('keydown',e=>{if(s.phase!=='levelup'||globalThis.CastleShell&&!CastleShell.canSimulate())return;if(['1','2','3'].includes(e.key)){e.preventDefault();chooseLegacy(s.rewardOptions[Number(e.key)-1]);return}if(e.key==='Tab'){const buttons=[...$('reward-options').querySelectorAll('button')];if(!buttons.length)return;e.preventDefault();const index=buttons.indexOf(document.activeElement),next=(index+(e.shiftKey?-1:1)+buttons.length)%buttons.length;buttons[next].focus()}});
 document.addEventListener('input',e=>{if(e.target.id==='meter-font')$('damage-meter').style.setProperty('--meter-font',e.target.value+'px')});
+document.addEventListener('change',e=>{if(e.target.id==='auto-deploy'&&s.phase==='planning'){s.autoDeploy=e.target.checked;log(s.autoDeploy?'Automatic deployment enabled for upcoming attack fronts.':'Automatic deployment disabled.');render()}});
+document.addEventListener('click',e=>{if(e.target.id==='building-overlay')closeBuilding()});
+document.addEventListener('keydown',e=>{if(activeBuilding===null||e.key!=='Tab'||globalThis.CastleShell&&!CastleShell.canSimulate())return;const controls=[...$('building-overlay').querySelectorAll('button:not([disabled]),input:not([disabled])')].filter(el=>el.getClientRects().length);if(!controls.length)return;e.preventDefault();const index=controls.indexOf(document.activeElement);controls[(index+(e.shiftKey?-1:1)+controls.length)%controls.length].focus()},true);
 const canvas=$('map'),ctx=globalThis.CastleEngine?CastleEngine.createSurface(canvas):canvas.getContext('2d');
 function resizeCanvas(){
  const bounds=canvas.getBoundingClientRect(),ratio=Math.min(window.devicePixelRatio||1,3)*(globalThis.CastleEngine?.settings.resolution??1);
@@ -464,6 +559,7 @@ function resizeCanvas(){
 }
 function handleMapClick(x,y){
  if(s.phase!=='planning'||globalThis.CastleShell&&!CastleShell.canSimulate())return false;
+ if(placingTower!==null){const cell=towerCellAt(x,y);if(!placeTower(placingTower,cell))log('Choose an empty exterior or wall tile for the tower.');render();return true}
  const cell=cellAt(x,y),occupied=s.units.some(u=>u.hp>0&&u.post===cell);
  if(cell>=0&&selected!==null&&!occupied){
   if(deploy(selected,cell)){log('Defender repositioned. This is its new return post.');selected=null}render();return true;
@@ -471,16 +567,17 @@ function handleMapClick(x,y){
  const hit=s.units.findIndex(u=>{if(u.post===null||u.hp<=0)return false;const p=unitPosition(u);return Math.abs(p.x-x)<=20&&y>=p.y-55&&y<=p.y+16});
  if(hit>=0){selected=hit;log(types[s.units[hit].type].name+' selected. Click an empty grid square to reposition.');render();return true}
  if(cell>=0&&selected!==null){if(deploy(selected,cell)){log('Defender repositioned. This is its new return post.');selected=null}else log('That square is occupied.');render();return true}
- const area=areas.findIndex(a=>Math.hypot(a.x-x,a.y-y)<65);if(area>=0){log(areas[area].name+': use the worker controls to assign villagers.');render()}
+ const tower=s.towers.find(t=>t.cell!==null&&Math.abs(walkCells[t.cell].x-x)<30&&y>=walkCells[t.cell].y-82&&y<=walkCells[t.cell].y+20);if(tower){tab='defences';openBuilding('castle');return true}
+ const building=buildingAt(x,y);if(building!==null){openBuilding(building);return true}
  return false;
 }
 canvas.addEventListener('click',e=>{const r=canvas.getBoundingClientRect(),p=mapPoint((e.clientX-r.left)*1000/r.width,(e.clientY-r.top)*740/r.height);handleMapClick(p.x,p.y)});
 
-function finish(){s.clearedWave=s.wave;globalThis.CastleShell?.sfx('research');shots=[];swings=[];for(let i=0;i<4;i++)s.res[i]+=s.workers[i]*yieldFor(i);if(hasLegacy('vineyards'))s.res[2]+=s.workers[0]*2;if(hasLegacy('paper'))s.res[2]+=s.workers[1]*2;if(hasLegacy('tuntian'))s.res[0]+=s.units.length;s.villagers++;log(`Wave ${s.wave} cleared. Harvest collected; a new villager joins. All defenders recover and return to their assigned posts.`);recoverDefenders();if(s.wave===12){s.phase='won';log('The kingdom is secure. Your settlement survived all twelve waves.')}else{s.wave++;s.phase='planning'}render()}
+function finish(){s.clearedWave=s.wave;globalThis.CastleShell?.sfx('research');shots=[];swings=[];for(let i=0;i<4;i++)s.res[i]+=s.workers[i]*yieldFor(i);if(hasLegacy('vineyards'))s.res[2]+=s.workers[0]*2;if(hasLegacy('paper'))s.res[2]+=s.workers[1]*2;if(hasLegacy('tuntian'))s.res[0]+=s.units.length;s.villagers++;log(`Wave ${s.wave} cleared. Harvest collected; a new villager joins. All defenders recover and return to their assigned posts.`);recoverDefenders();if(s.wave===12){s.phase='won';log('The kingdom is secure. Your settlement survived all twelve waves.')}else{s.wave++;s.phase='planning';if(s.autoDeploy)redeployAll(attackSide())}render()}
 function emitParticles(target,lethal){if(!globalThis.CastleEngine?.settings.particles)return;const count=lethal?8:3;for(let i=0;i<count&&particles.length<250;i++)particles.push({x:target.x,y:target.y-10,vx:(Math.random()-.5)*55,vy:-15-Math.random()*30,life:lethal?.7:.3,max:lethal?.7:.3,color:lethal?'#c8ae78':'#f2df9e'})}
 function tick(dt){if(s.phase!=='battle'||globalThis.CastleShell&&!CastleShell.canSimulate())return;spawn-=dt;if(remaining>0&&spawn<=0){const a=assault(),angle=a.side*Math.PI/2+(Math.random()-.5)*.65;enemies.push({x:500+Math.cos(angle)*800,y:350+Math.sin(angle)*600,hp:55+s.wave*12,max:55+s.wave*12,cavalry:a.cavalry,model:a.model,cool:0,attacking:false});remaining--;spawn=.85}
  for(const p of particles){p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=70*dt}particles=particles.filter(p=>p.life>0);
- legacyRegeneration(dt);fireCastle(dt);if(s.phase==='levelup'){render();return}
+ legacyRegeneration(dt);fireCastle(dt);if(s.phase==='battle')fireTowers(dt);if(s.phase==='levelup'){render();return}
  for(const u of s.units){
   if(u.hp<=0||u.post===null)continue;const t=unitStats(u.type);
   const pursuit=defenderTarget(u);
@@ -500,6 +597,8 @@ function tick(dt){if(s.phase!=='battle'||globalThis.CastleShell&&!CastleShell.ca
   e.cool-=dt;e.attacking=false;
   const blocker=s.units.filter(u=>u.hp>0&&u.post!==null&&Math.hypot(unitPosition(u).x-e.x,unitPosition(u).y-e.y)<stats.range).sort((a,b)=>Math.hypot(unitPosition(a).x-e.x,unitPosition(a).y-e.y)-Math.hypot(unitPosition(b).x-e.x,unitPosition(b).y-e.y))[0];
   if(blocker){e.facing=facing(unitPosition(blocker).x-e.x,unitPosition(blocker).y-e.y);e.attacking=true;if(e.cool<=0){blocker.hp-=Math.max(1,stats.damage-unitStats(blocker.type)[e.model==='archer'?'pierceArmor':'meleeArmor']);e.cool=.8;if(e.model==='archer')shots.push({x:e.x,y:e.y,tx:unitPosition(blocker).x,ty:unitPosition(blocker).y,life:.15})}continue}
+  const tower=s.towers.filter(t=>t.cell!==null&&t.hp>0&&Math.hypot(walkCells[t.cell].x-e.x,walkCells[t.cell].y-e.y)<stats.range+18).sort((a,b)=>Math.hypot(walkCells[a.cell].x-e.x,walkCells[a.cell].y-e.y)-Math.hypot(walkCells[b.cell].x-e.x,walkCells[b.cell].y-e.y))[0];
+  if(tower){const p=walkCells[tower.cell];e.facing=facing(p.x-e.x,p.y-e.y);e.attacking=true;if(e.cool<=0){tower.hp=Math.max(0,tower.hp-stats.damage);e.cool=.8;if(e.model==='archer')shots.push({x:e.x,y:e.y,tx:p.x,ty:p.y,life:.15})}continue}
   const dx=500-e.x,dy=350-e.y,d=Math.hypot(dx,dy);e.facing=facing(dx,dy);
   if(s.wallhp>0?Math.max(Math.abs(dx)/((WALL.right-WALL.left)/2+8),Math.abs(dy)/((WALL.bottom-WALL.top)/2+8))>1:d>45){e.x+=dx/d*stats.speed*dt;e.y+=dy/d*stats.speed*dt}
   else{e.attacking=true;if(e.cool<=0){if(s.wallhp>0)s.wallhp=Math.max(0,s.wallhp-stats.wallDamage);else s.hp=Math.max(0,s.hp-24);e.cool=1}}
@@ -560,7 +659,7 @@ function drawWorkers(){
   ctx.restore();
  });
 }
-function draw(){resizeCanvas();ctx.save();ctx.translate(500,370);ctx.scale(CAMERA.zoom,CAMERA.zoom);ctx.translate(-CAMERA.x,-CAMERA.y);terrain();
+function draw(){resizeCanvas();ctx.save();ctx.translate(500,370);ctx.scale(CAMERA.zoom,CAMERA.zoom);ctx.translate(-CAMERA.x,-CAMERA.y);terrain();drawAssaultRoute();
  // Exterior woodlines leave the four attack lanes open.
  for(let i=0;i<(globalThis.CastleEngine?.settings.details===false?24:45);i++){
   const corner=i%4,x=(corner%2?885:65)+(i*31%95)-45,y=(corner<2?105:650)+(i*19%90)-45;
@@ -579,6 +678,7 @@ function draw(){resizeCanvas();ctx.save();ctx.translate(500,370);ctx.scale(CAMER
  if(!sprite('castle',500,412,128,145))rect(455,290,90,115,'#b5a789');
  drawWorkers();
  drawWalls(true);
+ drawTowers();
  if(globalThis.CastleEngine?.settings.grid!=='hidden'||selected!==null)posts.forEach((p,i)=>{const occupied=s.units.some(u=>u.post===i&&u.hp>0);ctx.fillStyle=occupied?'#6e793e55':selected!==null?'#fff0ad28':'#453b240a';ctx.fillRect(p.x-20,p.y-20,40,40);ctx.strokeStyle=selected!==null?'#fff1afaa':globalThis.CastleEngine?.settings.grid==='always'?'#594c3988':'#453b2425';ctx.lineWidth=1;ctx.strokeRect(p.x-20,p.y-20,40,40)});
 
  for(const u of s.units){if(u.post===null||u.hp<=0)continue;const p=unitPosition(u),t=types[u.type];if(s.phase==='planning'&&selected===s.units.indexOf(u)){ctx.strokeStyle='#fff3a7';ctx.lineWidth=3;ctx.strokeRect(p.x-20,p.y-20,40,40)}const drawn=t.animated?animatedSprite(u.attackTime>0?t.art.replace('walk','attack'):t.art,p.x,p.y,.95,u.attackTime>0||u.moving,0,u.facing??0):sprite(t.art,p.x,p.y+13,t.art==='knight'||t.art==='cavalier'?51:32,48);if(!drawn)text(t.name[0],p.x,p.y,18,t.color);rect(p.x-17,p.y+23,34,4,'#17251b');rect(p.x-17,p.y+23,34*u.hp/unitStats(u.type).hp,4,'#a5c17d')}
@@ -610,7 +710,7 @@ function mapLabel(title,detail,x,y){
  text(title,p.x,p.y+2,14,'#302b1c');if(detail)text(detail,p.x,p.y+18,12,'#403b28');ctx.restore();
 }
 function drawMapLabels(){
- mapLabel('CASTLE','Auto arrows · lowest HP target',500,420);
+ mapLabel('CASTLE','Click to manage army & defences',500,420);
  for(let i=0;i<areas.length;i++){const a=areas[i];mapLabel(a.name,s.workers[i]+' villagers',a.x,a.y>400?520:289)}
  mapLabel('WALLS '+Math.ceil(s.wallhp)+' / '+(wallMaximum())+' HP','',500,-110);
  const hp=screenPoint(500,-110);rect(hp.x-88,hp.y+13,176,4,'#403a2d');rect(hp.x-88,hp.y+13,176*s.wallhp/(wallMaximum()),4,'#d5b577');
@@ -625,6 +725,6 @@ function frame(time){
  if(s.phase!=='levelup'&&(!globalThis.CastleShell||CastleShell.canSimulate()))animationTime+=dt*1000;
  tick(dt);draw();requestAnimationFrame(frame);
 }
-if(globalThis.CastleShell){CastleShell.onBegin=fresh;CastleShell.getState=()=>s}
+if(globalThis.CastleShell){CastleShell.onBegin=fresh;CastleShell.getState=()=>s;CastleShell.onEscape=()=>{if(activeBuilding!==null){closeBuilding();return true}if(selected!==null||placingTower!==null){selected=null;placingTower=null;render();return true}return false}}
 fresh();requestAnimationFrame(frame);
 </script></body></html>

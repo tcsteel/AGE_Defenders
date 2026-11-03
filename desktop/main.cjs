@@ -21,7 +21,7 @@ else {
   await window.loadURL(origin);
   if(process.argv.includes('--smoke-test')){
    await new Promise(resolve=>setTimeout(resolve,1800));
-   const state=await window.webContents.executeJavaScript(`(async()=>{const response=await fetch('/api/update/version');const assets=await Promise.all(['crossbowmanwalk','crossbowmanattack','arbalesterwalk','arbalesterattack','farm','castle'].map(async name=>{const image=new Image();image.src='/assets/aoe/'+name+'.png';await image.decode();return image.naturalWidth>0}));document.getElementById('begin-game').click();return {desktop:(await response.json()).desktop,mode:CastleShell.mode,assets:assets.every(Boolean),renderer:CastleEngine.surface.active?'webgpu':'canvas'}})()`);
+   const state=await window.webContents.executeJavaScript(`(async()=>{const response=await fetch('/api/update/version');const assets=await Promise.all(['crossbowmanwalk','crossbowmanattack','arbalesterwalk','arbalesterattack','farm','castle','tower'].map(async name=>{const image=new Image();image.src='/assets/aoe/'+name+'.png';await image.decode();return image.naturalWidth>0}));document.getElementById('begin-game').click();return {desktop:(await response.json()).desktop,mode:CastleShell.mode,assets:assets.every(Boolean),renderer:CastleEngine.surface.active?'webgpu':'canvas'}})()`);
    const file=process.env.CASTLE_SMOKE_OUTPUT||path.join(app.getPath('temp'),'age-defenders-desktop-smoke.json');
    fs.writeFileSync(file,JSON.stringify(state));
    app.quit();

@@ -2,6 +2,11 @@
   "civilization": "Britons",
   "format": "static main layers and 24-frame full-cycle animation loops; combat has sixteen directions",
   "files": {
+    "tower": {
+      "source": "b_west_tower_age2_x1.sld",
+      "width": 112,
+      "height": 204
+    },
     "castle": {
       "source": "b_west_castle_age3_x1.sld",
       "width": 352,

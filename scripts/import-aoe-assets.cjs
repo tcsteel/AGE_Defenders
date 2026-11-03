@@ -34,7 +34,7 @@ function decode(file, layer=28, previous=null){
  return {png:png(w,h,rgba),pixels:rgba,x,y,width:w,height:h};
 }
 const graphics=path.join(root,'resources/_common/drs/graphics');
-const files={castle:'b_west_castle_age3_x1.sld',crossbowman:'u_arc_crossbowman_idleA_x1.sld',pikeman:'u_inf_pikeman_idleA_x1.sld',knight:'u_cav_knight_idleA_x1.sld',mill:'b_west_mill_age3_x1.sld',lumber:'b_west_lumber_camp_age2_x1.sld',mining:'b_west_mining_camp_age2_x1.sld'};
+const files={tower:'b_west_tower_age2_x1.sld',castle:'b_west_castle_age3_x1.sld',crossbowman:'u_arc_crossbowman_idleA_x1.sld',pikeman:'u_inf_pikeman_idleA_x1.sld',knight:'u_cav_knight_idleA_x1.sld',mill:'b_west_mill_age3_x1.sld',lumber:'b_west_lumber_camp_age2_x1.sld',mining:'b_west_mining_camp_age2_x1.sld'};
 Object.assign(files,{gold:'n_mine_gold_x1.sld',stone:'n_mine_stone_x1.sld',acacia:'n_tree_acacia_x1.sld',oak:'n_tree_green_oak_x1.sld',palisade:'b_dark_wall_palisade_x1.sld',wallstone:'b_west_wall_stone_x1.sld',wallfortified:'b_west_wall_fortified_x1.sld'});
 Object.assign(files,{spearman:'u_inf_spearman_idleA_x1.sld',arbalester:'u_arc_arbalest_idleA_x1.sld',halberdier:'u_inf_halberdier_idleA_x1.sld',cavalier:'u_cav_cavalier_idleA_x1.sld'});
 const manifest={civilization:'Britons',format:'static main layers and 24-frame full-cycle animation loops; combat has sixteen directions',files:{}};
