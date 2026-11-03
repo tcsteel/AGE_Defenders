@@ -147,11 +147,11 @@ This updates the local checkout from GitHub; it does not publish a hosted websit
 
 ## Windows download
 
-Download **AGE-Defenders-1.2.0-Windows.exe** from [GitHub Releases](https://github.com/tcsteel/AGE_Defenders/releases/latest) and run it. The portable Windows x64 executable includes the game engine, graphics and audio. It needs neither Node.js nor a separate AoE2 installation. Windows may show an unknown publisher prompt because this build is unsigned.
+Download **AGE-Defenders-1.3.0-Windows.exe** from [GitHub Releases](https://github.com/tcsteel/AGE_Defenders/releases/latest) and run it. The portable Windows x64 executable includes the game engine, graphics and audio. It needs neither Node.js nor a separate AoE2 installation. Windows may show an unknown publisher prompt because this build is unsigned.
 
 Settings and scores are stored in the desktop app profile. The game listens only on this computer at port 3167; it stops its server when closed. A second launch focuses the existing window. If that port is occupied by another application, close that application before launching.
 
-Web updates in the Windows build checks GitHub Releases and links to the latest executable. Download the replacement and close the old game before launching it. The source checkout retains its Git updater.
+Game updates in the Windows build checks GitHub Releases. Press Download update to save the latest executable without opening a browser. Progress is displayed in the game; you may return to your current run while the file downloads. After verification, use Show downloaded file, close the old game and run the new executable. Downloads are stored under Downloads / AGE Defenders, and settings/scores are preserved. The source checkout retains its Git updater.
 
 To build locally: `npm ci`, then `npm run desktop:build`. The executable appears under `release/`. `npm run desktop` starts the desktop app from source. `npm run test:desktop` verifies a built portable executable. The Windows release workflow builds and attaches the executable when a `v*` tag is pushed. Bump package.json/package-lock.json versions before a new release. See [ASSET-NOTICE.md](ASSET-NOTICE.md) for third-party asset information.
 
@@ -164,3 +164,7 @@ Starting a wave with idle villagers is blocked by an on-screen message. Assign e
 Enable **Auto deploy to front** in the assault panel to move all mobile defenders, including undeployed troops, to the next attack side after victory. Melee stand ahead of ranged units, occupied tower tiles are skipped, and the new formation becomes each troop's return post. Towers stay where you built them. The option resets for a new run.
 
 Watch Towers are constructed through Castle > Walls & towers from Feudal Age for 50 wood + 125 stone. Select an exterior or wall grid tile to place the purchased tower. Towers have 450 HP, 10 base attack, 6.5-tile range, and a 1.2-second firing interval. Ranged blacksmith research improves their attack/range; Yeomen adds 2 attack. They can intersect wall tiles without changing wall HP, tier, or collision. Enemies can damage/destroy towers, but must still breach the walls to reach the castle. Repair damaged towers between waves; rebuilding requires a clear tile. Tower damage appears as its own group in the damage meter.
+
+## Direct update downloads (v1.3)
+
+Version 1.3.0 is the first desktop build with direct in-game downloads. Install this version once using the GitHub release download; older executables cannot gain this feature without being replaced. Future versions appear under Game updates with a Download update button. The game streams the Windows release to Downloads, checks its size and SHA-256 checksum, and only then exposes the finished executable. Failed downloads are removed and can be retried. Downloads never replace or automatically launch a running executable.

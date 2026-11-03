@@ -1,10 +1,10 @@
 {
   "name": "app_aoe2vibe",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/game.cjs && node tests/shell.cjs && node tests/renderer.cjs && node tests/updates.cjs",
+    "test": "node tests/game.cjs && node tests/shell.cjs && node tests/renderer.cjs && node tests/updates.cjs && node tests/desktop-updates.cjs",
     "test:browser": "node tests/browser-smoke.cjs",
     "dev": "node scripts/serve.cjs --dev",
     "start": "node scripts/serve.cjs",

@@ -10,6 +10,7 @@ else {
  app.on('second-instance',()=>{if(window){if(window.isMinimized())window.restore();window.focus()}});
  app.whenReady().then(async()=>{
   process.env.CASTLE_DESKTOP='1';
+  require('../scripts/desktop-updates.cjs').configure({downloadsDirectory:app.getPath('downloads'),revealFile:file=>shell.showItemInFolder(file)});
   const {startServer}=await import('../dist/server.js');
   server=startServer(port);
   await new Promise((resolve,reject)=>{server.once('listening',resolve);server.once('error',reject)});
